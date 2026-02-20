@@ -10,11 +10,11 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-mongoose.connect("mongodb://127.0.0.1:27017/todolist")
+mongoose.connect("mongodb+srv://aiswarya:@!S2005/2908@cluster0.dw7rdin.mongodb.net/todolist?appName=Cluster0")
 .then(async () => {
     console.log("✅ MongoDB Connected");
 
-    // Create counter document if not exists
+    // Create counter document if not exist
     const counter = await Counter.findOne();
     if (!counter) {
         await Counter.create({ total: 0, completed: 0 });
@@ -93,6 +93,7 @@ app.delete("/todolist/:id", async (req, res) => {
 });
 
 
+const PORT = process.env.PORT||3000;
 app.listen(3000, () => {
     console.log("✅ Server running on http://localhost:3000");
 });

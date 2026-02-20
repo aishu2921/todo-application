@@ -1,5 +1,5 @@
-const API_URL = "http://localhost:3000/todolist";
-const COUNT_URL = "http://localhost:3000/counts";
+const API_URL = "https://todo-application-backend-yhsh.onrender.com/todolist";
+const COUNT_URL = "https://todo-application-backend-yhsh.onrender.com/counts";
 
 const taskInput = document.getElementById("taskInput");
 const addBtn = document.getElementById("addBtn");
