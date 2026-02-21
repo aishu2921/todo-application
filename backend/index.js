@@ -10,7 +10,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-mongoose.connect("mongodb+srv://aiswarya:aishu2005@cluster0.dw7rdin.mongodb.net/todolist?appName=Cluster0")
+mongoose.connect("MONGO_URI=mongodb://localhost:27017/expenseMONGO_URI=mongodb://localhost:27017/expense")
 .then(async () => {
     console.log("✅ MongoDB Connected");
 
