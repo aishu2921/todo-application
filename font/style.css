@@ -1,48 +1,203 @@
+/* =========================
+   GOOGLE FONT
+========================= */
+@import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap');
+
+/* =========================
+   BODY (Notice Board Look)
+========================= */
 body {
-    font-family: Arial;
+    margin: 0;
+    padding: 40px 15px;
+    min-height: 100vh;
     text-align: center;
-    background: linear-gradient(135deg,#667eea,#764ba2);
-    color: white;
+    font-family: 'Patrick Hand', cursive;
+    background: #d7ccc8;
+    background-image: 
+        repeating-linear-gradient(
+            45deg,
+            #c8b6a6 0px,
+            #c8b6a6 20px,
+            #d7ccc8 20px,
+            #d7ccc8 40px
+        );
 }
 
+/* =========================
+   TITLE
+========================= */
+h1 {
+    font-size: 48px;
+    color: #4e342e;
+    margin-bottom: 25px;
+    letter-spacing: 2px;
+}
+
+/* =========================
+   INPUT SECTION
+========================= */
+.container {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+#taskInput {
+    width: 230px;
+    padding: 12px 18px;
+    border-radius: 5px;
+    border: 2px solid #6d4c41;
+    font-family: 'Patrick Hand', cursive;
+    font-size: 16px;
+}
+
+#addBtn {
+    padding: 12px 18px;
+    border-radius: 5px;
+    border: none;
+    background: #6d4c41;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+#addBtn:hover {
+    background: #4e342e;
+}
+
+/* =========================
+   TASK COUNTER
+========================= */
+#taskCount {
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: #4e342e;
+}
+
+/* =========================
+   TASK LIST
+========================= */
 ul {
     list-style: none;
     padding: 0;
-    width: 350px;
-    margin: 20px auto;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
 }
 
+/* =========================
+   LIST STYLE (Vertical)
+========================= */
 li {
-    background: white;
-    color: black;
-    padding: 12px;
-    margin: 10px 0;
-    border-radius: 15px;
+    background: #fff8e1;
+    margin-bottom: 12px;
+    padding: 14px 18px;
+    border-left: 6px solid #6d4c41;
+    border-radius: 4px;
     display: flex;
+    align-items: center;
     justify-content: space-between;
+    font-size: 20px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+    animation: slideIn 0.4s ease;
+    transition: 0.3s ease;
 }
 
+/* Alternate colors */
+li:nth-child(odd) {
+    background: #ffe0b2;
+    border-left-color: #e65100;
+}
+
+li:nth-child(even) {
+    background: #fff3e0;
+    border-left-color: #4e342e;
+}
+
+/* Add animation */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Hover effect */
+li:hover {
+    transform: translateX(8px);
+}
+
+/* =========================
+   CHECK BUTTON
+========================= */
 .checkBtn {
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
     border-radius: 50%;
-    border: 2px solid purple;
+    border: 2px solid #4e342e;
     cursor: pointer;
+    margin-right: 10px;
 }
 
 .completedCircle {
-    background: green;
+    background: #2e7d32;
 }
 
 .completed {
     text-decoration: line-through;
-    color: gray;
+    opacity: 0.6;
 }
 
+/* =========================
+   DELETE BUTTON
+========================= */
 .deleteBtn {
-    background: red;
-    color: white;
-    border: none;
     padding: 5px 10px;
-    border-radius: 10px;
+    border-radius: 5px;
+    border: none;
+    background: #d32f2f;
+    color: white;
+    cursor: pointer;
+    font-family: 'Patrick Hand', cursive;
+    transition: 0.3s;
+}
+
+.deleteBtn:hover {
+    background: #b71c1c;
+}
+
+/* =========================
+   DELETE ANIMATION (WORKING)
+========================= */
+.removing {
+    animation: removeTask 0.5s forwards;
+}
+
+@keyframes removeTask {
+    0% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(80px);
+        height: 0;
+        margin: 0;
+        padding: 0;
+    }
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 500px) {
+    ul {
+        width: 95%;
+    }
 }
