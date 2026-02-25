@@ -1,0 +1,195 @@
+
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-family: 'Patrick Hand', cursive;
+    background: #d7ccc8;
+    background-image: 
+        repeating-linear-gradient(
+            45deg,
+            #c8b6a6 0px,
+            #c8b6a6 20px,
+            #d7ccc8 20px,
+            #d7ccc8 40px
+        );
+}
+
+/* =========================
+   MAIN CONTAINER
+========================= */
+.container {
+    width: 100%;
+    max-width: 650px;
+    text-align: center;
+}
+
+/* =========================
+   TITLE
+========================= */
+h1 {
+    font-size: 48px;
+    color: #4e342e;
+    margin-bottom: 25px;
+    letter-spacing: 2px;
+}
+
+/* =========================
+   INPUT + BUTTON WRAPPER
+========================= */
+.container .inp,
+.container .add-btn {
+    margin-bottom: 20px;
+}
+
+.inp {
+    width: 230px;
+    padding: 12px 18px;
+    border-radius: 5px;
+    border: 2px solid #6d4c41;
+    font-family: 'Patrick Hand', cursive;
+    font-size: 16px;
+}
+
+.add-btn {
+    padding: 12px 18px;
+    margin-left: 10px;
+    border-radius: 5px;
+    border: none;
+    background: #6d4c41;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+.add-btn:hover {
+    background: #4e342e;
+}
+
+/* =========================
+   TASK LIST
+========================= */
+.tasklist {
+    list-style: none;
+    padding: 0;
+    margin: 20px auto 0 auto;
+    max-width: 600px;
+}
+
+/* =========================
+   LIST ITEMS
+========================= */
+.tasklist li {
+    background: #fff8e1;
+    margin-bottom: 12px;
+    padding: 14px 18px;
+    border-left: 6px solid #6d4c41;
+    border-radius: 4px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    font-size: 20px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+    animation: slideIn 0.4s ease;
+    transition: 0.3s ease;
+}
+
+/* Alternate colors */
+.tasklist li:nth-child(odd) {
+    background: #ffe0b2;
+    border-left-color: #e65100;
+}
+
+.tasklist li:nth-child(even) {
+    background: #fff3e0;
+    border-left-color: #4e342e;
+}
+
+/* Add animation */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Hover */
+.tasklist li:hover {
+    transform: translateX(8px);
+}
+
+/* =========================
+   COMPLETE BUTTON
+========================= */
+.comp-btn {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid #4e342e;
+    background: transparent;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.marked {
+    background: #2e7d32;
+    color: white;
+}
+
+/* =========================
+   TASK TEXT
+========================= */
+.tasktext {
+    flex: 1;
+    text-align: left;
+}
+
+.taskcomp {
+    text-decoration: line-through;
+    opacity: 0.6;
+}
+
+/* =========================
+   DELETE BUTTON
+========================= */
+.dlt-btn {
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: none;
+    background: #d32f2f;
+    color: white;
+    cursor: pointer;
+    font-family: 'Patrick Hand', cursive;
+    transition: 0.3s;
+}
+
+.dlt-btn:hover {
+    background: #b71c1c;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 500px) {
+    .inp {
+        width: 90%;
+        margin-bottom: 10px;
+    }
+
+    .add-btn {
+        margin-left: 0;
+        margin-top: 10px;
+    }
+}
