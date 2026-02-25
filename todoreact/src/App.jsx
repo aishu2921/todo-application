@@ -1,95 +1,129 @@
-
-
 import { useEffect, useState } from "react";
 import "./App.css";
+
 function App() {
-  const [task, setTask] = useState("");
-  const [list, setList] = useState([]);
+  const API_URL = "https://todo-application-backend-yhsh.onrender.com/todolist";
+  const COUNT_URL = "https://todo-application-backend-yhsh.onrender.com/counts";
 
-   const API_URL = "https://todo-application-backend-yhsh.onrender.com/todolist";
+  const [taskInput, setTaskInput] = useState("");
+  const [tasks, setTasks] = useState([]);
+  const [counts, setCounts] = useState({ total: 0, completed: 0 });
 
-  useEffect( () => {
+  // Load tasks when page loads
+  useEffect(() => {
     fetch(API_URL)
       .then((res) => res.json())
-      .then((tasks) => 
-        setList(tasks)
-      )
-  }, [] );
+      .then((data) => {
+        setTasks(data);
+        loadCounts();
+      });
+  }, []);
 
+  // Load the counts
+  const loadCounts = () => {
+    fetch(COUNT_URL)
+      .then((res) => res.json())
+      .then((data) => {
+        setCounts(data);
+      });
+  };
+
+  // Add Task
   const addTask = () => {
-    if(task === ""){
-      return alert("Please enter a task");
+    const text = taskInput.trim();
+
+    if (text === "") {
+      alert("Please enter a task");
+      return;
     }
+
     fetch(API_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userTask:  task}),
+      body: JSON.stringify({ userTask: text }),
     })
       .then((res) => res.json())
-      .then((newtask) => {
-        setList([...list, newtask]);
-        setTask("");
+      .then((newTask) => {
+        setTasks([...tasks, newTask]);
+        setTaskInput("");
+        loadCounts();
       });
-
-
-   
   };
 
-   const complete = (id, status) => {
+  // Toggle Complete
+  const toggleStatus = (id, currentStatus) => {
+    const newStatus = !currentStatus;
+
     fetch(`${API_URL}/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ status: !status }),
-    })
-      .then((res) => res.json())
-      .then((newvalue) => {
-        const newList = list.map((tasks) => (tasks._id == id ? newvalue : tasks));
-        setList(newList);
-      });
+      body: JSON.stringify({ status: newStatus }),
+    }).then(() => {
+      const updatedTasks = tasks.map((task) =>
+        task._id === id ? { ...task, status: newStatus } : task
+      );
+      setTasks(updatedTasks);
+      loadCounts();
+    });
+  };
 
-    
-   };
-
-
-  const deletee = (id) => {
-
+  // Delete Task
+  const deleteTask = (id) => {
     fetch(`${API_URL}/${id}`, {
       method: "DELETE",
     }).then(() => {
-       const newlist = list.filter((t) => t._id != id);
-       setList([...newlist]);
+      const filteredTasks = tasks.filter((task) => task._id !== id);
+      setTasks(filteredTasks);
+      loadCounts();
     });
-    
   };
 
   return (
-    <div className="container">
-      <h1> Add your tasks</h1>
-      <input
-        className="inp"
-        value={task}
-        onChange={(event) => {
-          setTask(event.target.value);
-        }}></input>
-      <button className="add-btn" onClick={addTask}>
-        Add
-      </button>
-      <ul className="tasklist">
-        {list.map((task) => (
+    <div>
+      <h1>To-Do List</h1>
+
+      <div className="container">
+        <input
+          type="text"
+          placeholder="Enter a task"
+          value={taskInput}
+          onChange={(e) => setTaskInput(e.target.value)}
+          onKeyPress={(e) => {
+            if (e.key === "Enter") addTask();
+          }}
+        />
+        <button onClick={addTask}>Add Task</button>
+      </div>
+
+      <p>
+        Total: {counts.total} | Completed: {counts.completed}
+      </p>
+
+      <ul>
+        {tasks.map((task) => (
           <li key={task._id}>
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <div
+                className={`checkBtn ${
+                  task.status ? "completedCircle" : ""
+                }`}
+                onClick={() => toggleStatus(task._id, task.status)}
+              ></div>
+
+              <span
+                style={{ marginLeft: "10px" }}
+                className={task.status ? "completed" : ""}
+              >
+                {task.userTask}
+              </span>
+            </div>
+
             <button
-              className={`comp-btn ${task.status ? "marked" : ""}`}
-              onClick={() => {
-                complete(task._id, task.status);
-              }}>
-              {task.status && ""}
+              className="deleteBtn"
+              onClick={() => deleteTask(task._id)}
+            >
+              Delete
             </button>
-            <span className={`tasktext ${task.status ? "taskcomp" : ""}`}>
-              {task.userTask}
-            </span>
-            <button className="dlt-btn"
-            onClick={() => {deletee(task._id)}}
-            >Delete</button>
           </li>
         ))}
       </ul>
@@ -98,5 +132,3 @@ function App() {
 }
 
 export default App;
-
-

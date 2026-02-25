@@ -1,13 +1,17 @@
+/* ========================= 
+   GOOGLE FONT
+========================= */
+@import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap');
 
+/* =========================
+   BODY (Full Center Layout)
+========================= */
 body {
     margin: 0;
-    padding: 0;
     min-height: 100vh;
-
     display: flex;
-    justify-content: center;
-    align-items: center;
-
+    justify-content: center;   /* Horizontal center */
+    align-items: center;       /* Vertical center */
     font-family: 'Patrick Hand', cursive;
     background: #d7ccc8;
     background-image: 
@@ -21,12 +25,13 @@ body {
 }
 
 /* =========================
-   MAIN CONTAINER
+   MAIN APP CONTAINER
 ========================= */
-.container {
+#root > div {
     width: 100%;
-    max-width: 650px;
+    max-width: 700px;
     text-align: center;
+    padding: 30px;
 }
 
 /* =========================
@@ -40,14 +45,16 @@ h1 {
 }
 
 /* =========================
-   INPUT + BUTTON WRAPPER
+   INPUT SECTION
 ========================= */
-.container .inp,
-.container .add-btn {
-    margin-bottom: 20px;
+.container {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 25px;
 }
 
-.inp {
+input {
     width: 230px;
     padding: 12px 18px;
     border-radius: 5px;
@@ -56,9 +63,8 @@ h1 {
     font-size: 16px;
 }
 
-.add-btn {
+button {
     padding: 12px 18px;
-    margin-left: 10px;
     border-radius: 5px;
     border: none;
     background: #6d4c41;
@@ -68,52 +74,56 @@ h1 {
     transition: 0.3s;
 }
 
-.add-btn:hover {
+button:hover {
     background: #4e342e;
+}
+
+/* =========================
+   TASK COUNTER
+========================= */
+p {
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: #4e342e;
 }
 
 /* =========================
    TASK LIST
 ========================= */
-.tasklist {
+ul {
     list-style: none;
     padding: 0;
-    margin: 20px auto 0 auto;
-    max-width: 600px;
+    width: 100%;
 }
 
 /* =========================
-   LIST ITEMS
+   LIST STYLE
 ========================= */
-.tasklist li {
+li {
     background: #fff8e1;
     margin-bottom: 12px;
     padding: 14px 18px;
     border-left: 6px solid #6d4c41;
     border-radius: 4px;
-
     display: flex;
     align-items: center;
     justify-content: space-between;
-
     font-size: 20px;
     box-shadow: 0 3px 8px rgba(0,0,0,0.2);
     animation: slideIn 0.4s ease;
     transition: 0.3s ease;
 }
 
-/* Alternate colors */
-.tasklist li:nth-child(odd) {
+li:nth-child(odd) {
     background: #ffe0b2;
     border-left-color: #e65100;
 }
 
-.tasklist li:nth-child(even) {
+li:nth-child(even) {
     background: #fff3e0;
     border-left-color: #4e342e;
 }
 
-/* Add animation */
 @keyframes slideIn {
     from {
         opacity: 0;
@@ -125,38 +135,27 @@ h1 {
     }
 }
 
-/* Hover */
-.tasklist li:hover {
+li:hover {
     transform: translateX(8px);
 }
 
 /* =========================
-   COMPLETE BUTTON
+   CHECK BUTTON
 ========================= */
-.comp-btn {
-    width: 20px;
-    height: 20px;
+.checkBtn {
+    width: 18px;
+    height: 18px;
     border-radius: 50%;
     border: 2px solid #4e342e;
-    background: transparent;
     cursor: pointer;
     margin-right: 10px;
 }
 
-.marked {
+.completedCircle {
     background: #2e7d32;
-    color: white;
 }
 
-/* =========================
-   TASK TEXT
-========================= */
-.tasktext {
-    flex: 1;
-    text-align: left;
-}
-
-.taskcomp {
+.completed {
     text-decoration: line-through;
     opacity: 0.6;
 }
@@ -164,7 +163,7 @@ h1 {
 /* =========================
    DELETE BUTTON
 ========================= */
-.dlt-btn {
+.deleteBtn {
     padding: 5px 10px;
     border-radius: 5px;
     border: none;
@@ -175,7 +174,7 @@ h1 {
     transition: 0.3s;
 }
 
-.dlt-btn:hover {
+.deleteBtn:hover {
     background: #b71c1c;
 }
 
@@ -183,13 +182,8 @@ h1 {
    RESPONSIVE
 ========================= */
 @media (max-width: 500px) {
-    .inp {
-        width: 90%;
-        margin-bottom: 10px;
-    }
-
-    .add-btn {
-        margin-left: 0;
-        margin-top: 10px;
+    #root > div {
+        width: 95%;
+        padding: 15px;
     }
 }
