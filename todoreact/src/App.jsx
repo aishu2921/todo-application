@@ -10,7 +10,7 @@ function App() {
   const [tasks, setTasks] = useState([]);
   const [counts, setCounts] = useState({ total: 0, completed: 0 });
 
-  // Load tasks when page loads
+  
   useEffect(() => {
     fetch(API_URL)
       .then((res) => res.json())
@@ -20,7 +20,7 @@ function App() {
       });
   }, []);
 
-  // Load the counts
+  
   const loadCounts = () => {
     fetch(COUNT_URL)
       .then((res) => res.json())
@@ -29,7 +29,7 @@ function App() {
       });
   };
 
-  // Add Task
+ 
   const addTask = () => {
     const text = taskInput.trim();
 
@@ -51,7 +51,7 @@ function App() {
       });
   };
 
-  // Toggle Complete
+  
   const toggleStatus = (id, currentStatus) => {
     const newStatus = !currentStatus;
 
@@ -68,7 +68,7 @@ function App() {
     });
   };
 
-  // Delete Task
+
   const deleteTask = (id) => {
     fetch(`${API_URL}/${id}`, {
       method: "DELETE",
