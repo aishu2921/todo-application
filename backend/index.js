@@ -3,97 +3,90 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 
 const Todo = require("./models/todo");
-const Counter = require("./models/counter");
 
 const app = express();
 
 app.use(express.json());
 app.use(cors());
 
-mongoose.connect("mongodb+srv://aiswarya:aishu2005@cluster0.dw7rdin.mongodb.net/todolist?appName=Cluster0")
-.then(async () => {
-    console.log("✅ MongoDB Connected");
-
-    // Create counter document if not exist
-    const counter = await Counter.findOne();
-    if (!counter) {
-        await Counter.create({ total: 0, completed: 0 });
-    }
-})
-.catch(err => console.log(err));
+// ================= MONGODB CONNECTION =================
+mongoose
+  .connect("mongodb+srv://aiswarya:aishu2005@cluster0.dw7rdin.mongodb.net/todolist")
+  .then(() => console.log("✅ MongoDB Connected"))
+  .catch((err) => console.log(err));
 
 
-// ================= GET TASKS =================
+// ================= GET ALL TASKS =================
 app.get("/todolist", async (req, res) => {
+  try {
     const tasks = await Todo.find();
     res.json(tasks);
+  } catch (err) {
+    res.status(500).json({ error: "Server Error" });
+  }
 });
 
 
 // ================= GET COUNTS =================
 app.get("/counts", async (req, res) => {
-    const counter = await Counter.findOne();
-    res.json(counter);
+  try {
+    const total = await Todo.countDocuments();
+    const completed = await Todo.countDocuments({ status: true });
+
+    res.json({ total, completed });
+  } catch (err) {
+    res.status(500).json({ error: "Server Error" });
+  }
 });
 
 
 // ================= ADD TASK =================
 app.post("/todolist", async (req, res) => {
-
+  try {
     const newTask = new Todo({
-        userTask: req.body.userTask,
-        status: false
+      userTask: req.body.userTask,
+      status: false,
     });
 
     await newTask.save();
-
-    await Counter.updateOne({}, { $inc: { total: 1 } });
-
     res.json(newTask);
+  } catch (err) {
+    res.status(500).json({ error: "Unable to add task" });
+  }
 });
 
 
 // ================= UPDATE STATUS =================
 app.put("/todolist/:id", async (req, res) => {
-
+  try {
     const task = await Todo.findById(req.params.id);
 
-    const oldStatus = task.status;
-    const newStatus = req.body.status;
+    if (!task) {
+      return res.status(404).json({ message: "Task not found" });
+    }
 
-    task.status = newStatus;
+    task.status = req.body.status;
     await task.save();
 
-    if (!oldStatus && newStatus) {
-        await Counter.updateOne({}, { $inc: { completed: 1 } });
-    }
-
-    if (oldStatus && !newStatus) {
-        await Counter.updateOne({}, { $inc: { completed: -1 } });
-    }
-
     res.json(task);
+  } catch (err) {
+    res.status(500).json({ error: "Unable to update task" });
+  }
 });
 
 
-// ================= DELETE =================
+// ================= DELETE TASK =================
 app.delete("/todolist/:id", async (req, res) => {
-
-    const task = await Todo.findById(req.params.id);
-
-    if (task.status) {
-        await Counter.updateOne({}, { $inc: { completed: -1 } });
-    }
-
-    await Counter.updateOne({}, { $inc: { total: -1 } });
-
+  try {
     await Todo.findByIdAndDelete(req.params.id);
-
-    res.json({ message: "Deleted" });
+    res.json({ message: "Deleted successfully" });
+  } catch (err) {
+    res.status(500).json({ error: "Unable to delete task" });
+  }
 });
 
 
-const PORT = process.env.PORT||3000;
-app.listen(3000, () => {
-    console.log("✅ Server running on http://localhost:3000");
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`✅ Server running on port ${PORT}`);
 });
