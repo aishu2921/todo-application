@@ -15,7 +15,7 @@ mongoose
   .catch((err) => console.log(err));
 
 
-// GET ALL TASKS
+
 app.get("/todolist", async (req, res) => {
   try {
     const tasks = await Todo.find();
@@ -25,7 +25,7 @@ app.get("/todolist", async (req, res) => {
   }
 });
 
-// GET COUNTS
+
 app.get("/counts", async (req, res) => {
   try {
     const total = await Todo.countDocuments();
@@ -37,7 +37,7 @@ app.get("/counts", async (req, res) => {
   }
 });
 
-// ADD TASK
+
 app.post("/todolist", async (req, res) => {
   try {
     const newTask = new Todo({
@@ -51,7 +51,7 @@ app.post("/todolist", async (req, res) => {
   }
 });
 
-// UPDATE STATUS
+
 app.put("/todolist/:id", async (req, res) => {
   try {
     const task = await Todo.findById(req.params.id);
@@ -63,7 +63,7 @@ app.put("/todolist/:id", async (req, res) => {
   }
 });
 
-// DELETE TASK
+
 app.delete("/todolist/:id", async (req, res) => {
   try {
     await Todo.findByIdAndDelete(req.params.id);
