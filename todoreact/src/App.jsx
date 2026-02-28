@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import "./App.css";
 
@@ -10,73 +9,52 @@ function App() {
   const [tasks, setTasks] = useState([]);
   const [counts, setCounts] = useState({ total: 0, completed: 0 });
 
-  
   useEffect(() => {
-    fetch(API_URL)
-      .then((res) => res.json())
-      .then((data) => {
-        setTasks(data);
-        loadCounts();
-      });
+    loadData();
   }, []);
 
-  
-  const loadCounts = () => {
-    fetch(COUNT_URL)
-      .then((res) => res.json())
-      .then((data) => {
-        setCounts(data);
-      });
+  const loadData = async () => {
+    const taskRes = await fetch(API_URL);
+    const taskData = await taskRes.json();
+    setTasks(taskData);
+
+    const countRes = await fetch(COUNT_URL);
+    const countData = await countRes.json();
+    setCounts(countData);
   };
 
- 
-  const addTask = () => {
-    const text = taskInput.trim();
-
-    if (text === "") {
+  const addTask = async () => {
+    if (taskInput.trim() === "") {
       alert("Please enter a task");
       return;
     }
 
-    fetch(API_URL, {
+    await fetch(API_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userTask: text }),
-    })
-      .then((res) => res.json())
-      .then((newTask) => {
-        setTasks([...tasks, newTask]);
-        setTaskInput("");
-        loadCounts();
-      });
+      body: JSON.stringify({ userTask: taskInput }),
+    });
+
+    setTaskInput("");
+    loadData(); // 🔥 reload everything
   };
 
-  
-  const toggleStatus = (id, currentStatus) => {
-    const newStatus = !currentStatus;
-
-    fetch(`${API_URL}/${id}`, {
+  const toggleStatus = async (id, currentStatus) => {
+    await fetch(`${API_URL}/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ status: newStatus }),
-    }).then(() => {
-      const updatedTasks = tasks.map((task) =>
-        task._id === id ? { ...task, status: newStatus } : task
-      );
-      setTasks(updatedTasks);
-      loadCounts();
+      body: JSON.stringify({ status: !currentStatus }),
     });
+
+    loadData(); // 🔥 reload everything
   };
 
-
-  const deleteTask = (id) => {
-    fetch(`${API_URL}/${id}`, {
+  const deleteTask = async (id) => {
+    await fetch(`${API_URL}/${id}`, {
       method: "DELETE",
-    }).then(() => {
-      const filteredTasks = tasks.filter((task) => task._id !== id);
-      setTasks(filteredTasks);
-      loadCounts();
     });
+
+    loadData(); // 🔥 reload everything
   };
 
   return (
@@ -89,9 +67,7 @@ function App() {
           placeholder="Enter a task"
           value={taskInput}
           onChange={(e) => setTaskInput(e.target.value)}
-          onKeyPress={(e) => {
-            if (e.key === "Enter") addTask();
-          }}
+          onKeyDown={(e) => e.key === "Enter" && addTask()}
         />
         <button onClick={addTask}>Add Task</button>
       </div>
