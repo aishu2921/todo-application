@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 
 const Todo = require("./models/todo");
-const Todo = require("./models/counter");
+//const Todo = require("./models/counter");
 
 const app = express();
 app.use(express.json());
